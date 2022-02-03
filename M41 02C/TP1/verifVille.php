@@ -12,9 +12,9 @@
     $rep = $connPDO->query("SELECT ville FROM bourse WHERE ville='$request'");
 
     if ($rep->fetch()) {
-        echo "existe";
+        echo "$request existe";
     }
     else {
-        echo "n'existe pas";
+        echo "$request n'existe pas";
     }
 ?>

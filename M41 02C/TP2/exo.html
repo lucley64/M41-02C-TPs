@@ -1,0 +1,47 @@
+<html>
+
+<head>
+
+    <meta charset="UTF-8">
+    <script>
+        function getByKeyWord(page) {
+
+            keyWord = document.getElementById("keyWords").value;
+            keyWord = keyWord.replace(" ", "+");
+            console.log(keyWord);
+            document.querySelector('#productsNames').innerHTML ="";
+
+            fetch(`https://fr.openfoodfacts.org/cgi/search.pl?action=process&search_terms=`+keyWord+`&sort_by=unique_scans_n&page_size=24&page=1&json=`+page)
+                .then(rep => rep.json())
+                .then(({products}) => {
+                    products.forEach(({product_name}) => {
+                        console.log(product_name)
+                        const p = document.createElement("p");
+                        p.innerText = product_name;
+                        document.querySelector('#productsNames').appendChild(p);
+                    });
+                })
+                .catch(console.error);
+
+            btn = document.createElement("button");
+            btn.addEventListener("click", function(){
+                getByKeyWord(page + 1);
+            });
+            btn.innerHTML = "Page suivante";
+            document.querySelector('#productsNames').appendChild(btn);
+        }
+
+    </script>
+</head>
+
+<body>
+
+    <input type="text" name="keyWords" id="keyWords">
+    <button onclick="getByKeyWord(1)">Rechercher </button>
+    <div id="productsNames">
+
+    </div>
+
+</body>
+
+</html>
